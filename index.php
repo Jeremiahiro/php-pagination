@@ -11,6 +11,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "abims";
+$table = 'payments';
 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -20,7 +21,7 @@ if ($conn->connect_error) {
 }
 
 // get data count 
-$get_users_count = "SELECT COUNT(*) as total FROM payments";
+$get_users_count = "SELECT COUNT(*) as total FROM $table";
 $total_records = $conn->query($get_users_count);
 $total_records_count = $total_records->fetch_assoc();
 
@@ -34,7 +35,7 @@ $limit = ($paginator->currentPage-1) * $paginator->itemsPerPage;
 $offset = $paginator->itemsPerPage;
 
 //get record from database
-$records = $conn->query("SELECT * FROM payments LIMIT $limit,  $offset") ;
+$records = $conn->query("SELECT * FROM $table LIMIT $limit,  $offset") ;
 
 // display data
 while ($row = $records->fetch_assoc()) {
