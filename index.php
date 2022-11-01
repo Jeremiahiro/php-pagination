@@ -4,14 +4,14 @@
 include 'paginator.php';
 
 echo 'Welcome to pagination example';
-echo "<br>"."<br>";
+echo "<br>";
 
 // database connection
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "abims";
-$table = 'payments';
+$table = 'invoice_line_items';
 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
@@ -39,7 +39,7 @@ $records = $conn->query("SELECT * FROM $table LIMIT $limit,  $offset") ;
 
 // display data
 while ($row = $records->fetch_assoc()) {
-    echo $row['id'] . ' - ' . $row['uuid']."<br>";
+    echo $row['id'] . ' - ' . $row['name']."<br>";
 }
 
 //print

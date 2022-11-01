@@ -10,3 +10,8 @@ In pagination.php, you can update
 - range of records to display
 - items select for dropdown
 - you can add styles for page numbers and item select
+
+To run this locally, open you terminal and serve php using
+```
+php -S localhost:{port number}
+```
