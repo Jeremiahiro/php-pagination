@@ -9,3 +9,4 @@ In pagination.php, you can update
 - number of records to display
 - range of records to display
 - items select for dropdown
+- you can add styles for page numbers and item select
