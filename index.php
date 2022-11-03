@@ -27,6 +27,7 @@ $total_records_count = $total_records->fetch_assoc();
 
 // use paginator file referenced included in line 3
 $paginator = new Paginator();
+$paginator->link = filter_var($_SERVER['PHP_SELF'], FILTER_UNSAFE_RAW); // replace with the right url for this page
 $paginator->total = $total_records_count['total'];
 $paginator->paginate();
 
@@ -37,6 +38,10 @@ $offset = $paginator->itemsPerPage;
 //get record from database
 $records = $conn->query("SELECT * FROM $table LIMIT $limit,  $offset") ;
 
+// this is for items per page, can be styled in paginator.php
+echo $paginator->itemsPerPage();
+echo "<br>";
+
 // display data
 while ($row = $records->fetch_assoc()) {
     echo $row['id'] . ' - ' . $row['name']."<br>";
@@ -44,6 +49,5 @@ while ($row = $records->fetch_assoc()) {
 
 //print
 echo $paginator->pageNumbers();
-echo $paginator->itemsPerPage();
 
 ?>
