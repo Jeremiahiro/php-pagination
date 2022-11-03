@@ -11,8 +11,8 @@ class Paginator {
 	public $currentPage;
 	public $total;
 	public $textNav;
+	public $link;
 	private $_navigation;		
-	private $_link;
 	private $_pageNumHtml;
 	private $_itemHtml;
 	/**
@@ -21,19 +21,20 @@ class Paginator {
 	public function __construct()
 	{
 		//set default values
-		$this->itemsPerPage = 5;
+		$this->itemsPerPage = 10;
 		$this->range        = 5;
 		$this->currentPage  = 1;		
 		$this->total		= 0;
 		$this->textNav 		= false;
-		$this->itemSelect   = array(5,10,15,20,'All');			
+		$this->itemSelect   = array(10,20,50,100,'All');	
+
 		//private values
 		$this->_navigation  = array(
 				'next'=>'Next',
 				'pre' =>'Pre',
 				'ipp' =>'Item per page'
 		);			
-		$this->_link 		 = filter_var($_SERVER['PHP_SELF'], FILTER_UNSAFE_RAW);
+		// $this->link 		 = filter_var($_SERVER['PHP_SELF'], FILTER_UNSAFE_RAW);
 		$this->_pageNumHtml  = '';
 		$this->_itemHtml 	 = '';
 	}
@@ -92,17 +93,16 @@ class Paginator {
 	/**
 	 * return page numbers html formats
 	 *
-	 * @author              The-Di-Lab <thedilab@gmail.com>
 	 * @access              public
 	 * @return              string
 	 */
 	private function  _getPageNumbers()
 	{
 		$html  = '<ul style="list-style: none; width: 100px; display:flex; justify-content: space-around;">'; 
+		
 		//previous link button
-
 		if(!$this->textNav&&($this->currentPage>1)){
-			$html .= '<li><a style="text-decoration:none;" href="'.$this->_link .'?current='.($this->currentPage-1).'"';
+			$html .= '<li><a style="text-decoration:none;" href="'.$this->link .'?current='.($this->currentPage-1).'"';
 			$html .= '>'.$this->_navigation['pre'].'</a></li>';
 		}        	
 		//do ranged pagination only when total pages is greater than the range
@@ -115,13 +115,13 @@ class Paginator {
 		}    
 		//loop through page numbers
 		for($i = $start; $i <= $end; $i++){
-				$html .= '<li><a style="text-decoration:none;" href="'.$this->_link .'?current='.$i.'"';
+				$html .= '<li><a style="text-decoration:none;" href="'.$this->link .'?current='.$i.'"';
 				if($i==$this->currentPage) $html .= "class='current'";
 				$html .= '>'.$i.'</a></li>';
 		}        	
 		//next link button
 		if($this->textNav&&($this->currentPage<$this->total)){
-			$html .= '<li><a style="text-decoration:none;" href="'.$this->_link .'?current='.($this->currentPage+1).'"';
+			$html .= '<li><a style="text-decoration:none;" href="'.$this->link .'?current='.($this->currentPage+1).'"';
 			$html .= '>'.$this->_navigation['next'].'</a></li>';
 		}
 		$html .= '</ul>';
@@ -131,7 +131,6 @@ class Paginator {
 	/**
 	 * return item select box
 	 *
-	 * @author              The-Di-Lab <thedilab@gmail.com>
 	 * @access              public
 	 * @return              string
 	 */
@@ -143,6 +142,6 @@ class Paginator {
 			$items .= ($ippOpt == $this->itemsPerPage) ? "<option selected value=\"$ippOpt\">$ippOpt</option>\n":"<option value=\"$ippOpt\">$ippOpt</option>\n";
 		}   			
 		return "<span class=\"paginate\">".$this->_navigation['ipp']."</span>
-		<select class=\"paginate\" onchange=\"window.location='$this->_link?current=1&item='+this[this.selectedIndex].value;return false\">$items</select>\n";   	
+		<select class=\"paginate\" onchange=\"window.location='$this->link?current=1&item='+this[this.selectedIndex].value;return false\">$items</select>\n";   	
 	}
 }
