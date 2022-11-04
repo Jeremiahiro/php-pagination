@@ -34,17 +34,30 @@ $paginator->paginate();
 // define limit & offset
 $limit = ($paginator->currentPage-1) * $paginator->itemsPerPage;
 $offset = $paginator->itemsPerPage;
+$search = $paginator->search;
 
-//get record from database
-$records = $conn->query("SELECT * FROM $table LIMIT $limit,  $offset") ;
+//get record from database and take search into consideration
+if(!$search) {
+    $records = $conn->query("SELECT * FROM $table LIMIT $limit, $offset");
+} else {
+    $records = $conn->query("SELECT * FROM $table WHERE name LIKE '%$search%' LIMIT $limit, $offset");
+}
 
 // this is for items per page, can be styled in paginator.php
 echo $paginator->itemsPerPage();
 echo "<br>";
 
+echo $paginator->itemsSearch();
+echo "<br>";
+
+// set serial number
+$offset;
+$pageNumber = isset($_GET['current']) ? (int)$_GET['current'] : 1;
+$currentNumber = ($pageNumber - 1) * $offset + 1;
+
 // display data
 while ($row = $records->fetch_assoc()) {
-    echo $row['id'] . ' - ' . $row['name']."<br>";
+    echo $currentNumber++ . ' - ' . $row['name']."<br>";
 }
 
 //print
